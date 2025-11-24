@@ -28,6 +28,11 @@ Centralizar os arquivos de schemas JSON-LD utilizados para otimizar SEO, indexa�
 - **Velo by Wix**: Injeção dinâmica dos JSON-LD nas páginas via código/fetch no backend do site.
 - **Wix Studio**: Frontend do site, integrado aos dados estruturados.
 
+**Fluxograma da stack SEO avançado**
+Fluxograma ilustrando todo o percurso dos dados estruturados do SEO até o algoritmo Google/IA:
+<img width="8173" height="2604" alt="Frame 13 (1)" src="https://github.com/user-attachments/assets/b29c95aa-660c-4370-bc6b-cfdb9531236f" />
+
+
 ## Instruções de integração ao Wix/Backend
 
 1. Armazene cada arquivo JSON neste repositório.
