@@ -1,0 +1,164 @@
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": "https://sergiodelcarlosite.wixstudio.com/psicologo#localbusiness",
+  
+  "name": "Sergio Del Carlo - Psicólogo Clínico e Orientação Profissional",
+  "alternateName": "Consultório Sergio Del Carlo - Psicologia Clínica",
+  "description": "Consultório especializado em Psicologia Clínica com abordagem integrativa de Tapeçaria Terapeútica. Combina Psicologia Analítica Junguiana, Psicodrama e Psicoterapia Existencial para oferecer atendimento profundo e transformador em São Paulo. Especialista em orientação profissional e terapia para executivos com 38 anos de experiência.",
+  "url": "https://sergiodelcarlosite.wixstudio.com/psicologo",
+  
+  "telephone": "+55 11 99964-4395",
+  "email": "contato@sergiodelcarlo.com.br",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "Atendimento ao Cliente",
+    "telephone": "+55 11 99964-4395",
+    "email": "contato@sergiodelcarlo.com.br",
+    "availableLanguage": ["pt-BR", "pt-PT", "es", "en"],
+    "hoursAvailable": "Mo-Fr 09:00-18:00"
+  },
+  
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Avenida Paulista, São Paulo, SP",
+    "addressLocality": "São Paulo",
+    "addressRegion": "SP",
+    "postalCode": "01311-100",
+    "addressCountry": "BR"
+  },
+  
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "-23.5611",
+    "longitude": "-46.6558"
+  },
+  
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "São Paulo"
+    },
+    {
+      "@type": "State",
+      "name": "SP",
+      "url": "https://pt.wikipedia.org/wiki/S%C3%A3o_Paulo_(estado)"
+    },
+    {
+      "@type": "Country",
+      "name": "Brasil"
+    }
+  ],
+  
+  "image": [
+    {
+      "@type": "ImageObject",
+      "url": "https://sergiodelcarlosite.wixstudio.com/images/sergio-consultorio.jpg",
+      "width": 1200,
+      "height": 800,
+      "caption": "Consultório de Psicologia Clínica - Sergio Del Carlo"
+    },
+    {
+      "@type": "ImageObject",
+      "url": "https://sergiodelcarlosite.wixstudio.com/images/sergio-perfil.jpg",
+      "width": 400,
+      "height": 400,
+      "caption": "Sergio Del Carlo Taioli - Psicólogo Clínico"
+    }
+  ],
+  
+  "priceRange": "$$",
+  "paymentAccepted": ["Cash", "CreditCard", "DebitCard", "PayPal"],
+  
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Serviços de Psicologia Especializada",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "name": "Psicologia Clínica - Tapeçaria Terapeútica",
+        "description": "Atendimento especializado em terapia profunda com abordagem integrativa que combina Psicologia Analítica Junguiana, Psicodrama e Psicoterapia Existencial. Indicado para quem busca transformação psicológica profunda.",
+        "url": "https://sergiodelcarlosite.wixstudio.com/psicologo/servico-psicologia-clinica",
+        "price": "200",
+        "priceCurrency": "BRL",
+        "priceValidUntil": "2025-12-31",
+        "availability": "InStock"
+      },
+      {
+        "@type": "Offer",
+        "name": "Orientação Profissional Especializada",
+        "description": "Orientação vocacional e profissional para jovens, profissionais em transição de carreira e executivos. Inclui avaliação integral de interesses, habilidades, valores e ressignificação profissional.",
+        "url": "https://sergiodelcarlosite.wixstudio.com/psicologo/servico-orientacao-profissional",
+        "price": "180",
+        "priceCurrency": "BRL",
+        "priceValidUntil": "2025-12-31",
+        "availability": "InStock"
+      }
+    ]
+  },
+  
+  "employee": {
+    "@type": "Person",
+    "@id": "https://sergiodelcarlosite.wixstudio.com/psicologo#person-sergio",
+    "name": "Sergio Del Carlo Taioli",
+    "jobTitle": "Psicólogo Clínico e Especialista em Orientação Profissional",
+    "yearsExperienceInRole": 38,
+    "knowsAbout": [
+      "Psicologia Analítica Junguiana",
+      "Psicodrama",
+      "Psicoterapia Existencial",
+      "Tapeçaria Terapeútica",
+      "Orientação Profissional",
+      "Psicologia Clínica"
+    ]
+  },
+  
+  "sameAs": [
+    "https://www.instagram.com/sergio_taioli",
+    "https://www.linkedin.com/in/sergio-del-carlo"
+  ],
+  
+  "knowsAbout": [
+    "Psicologia Analítica Junguiana",
+    "Psicodrama e Sociodrama",
+    "Psicoterapia Existencial",
+    "Terapia Profunda e Transformacional",
+    "Orientação Profissional Integral",
+    "Orientação Vocacional",
+    "Psicologia para Executivos",
+    "Transição de Carreira",
+    "Autoconhecimento e Desenvolvimento Pessoal",
+    "Tapeçaria Terapeútica - Abordagem Integrativa"
+  ],
+  
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "09:00",
+      "closes": "18:00"
+    }
+  ],
+  
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "reviewCount": "12",
+    "ratingExplanation": "Baseado em avaliações de clientes satisfeitos"
+  },
+  
+  "review": [
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "Cliente Satisfeito 1"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5"
+      },
+      "reviewBody": "Atendimento transformador. Sergio tem uma habilidade única em combinar diferentes abordagens psicológicas de forma integrada."
+    }
+  ]
+}
