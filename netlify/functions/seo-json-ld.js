@@ -1,65 +1,48 @@
-// Import JSON files directly - Netlify Functions can require JSON files
-let personSergio, localBusinessSergio, servicePsicologia, serviceOrientacao, faqSergio;
+const fs = require('fs');
+const path = require('path');
 
-try {
-  personSergio = require('../public/json/person-sergio.json');
-} catch (e) {
-  console.error('Failed to load person-sergio.json:', e.message);
-}
-
-try {
-  localBusinessSergio = require('../public/json/localbusiness-sergio.json');
-} catch (e) {
-  console.error('Failed to load localbusiness-sergio.json:', e.message);
-}
-
-try {
-  servicePsicologia = require('../public/json/service-psicologia-clinica-sergio.json');
-} catch (e) {
-  console.error('Failed to load service-psicologia-clinica-sergio.json:', e.message);
-}
-
-try {
-  serviceOrientacao = require('../public/json/service-orientacao-profissional-sergio.json');
-} catch (e) {
-  console.error('Failed to load service-orientacao-profissional-sergio.json:', e.message);
-}
-
-try {
-  faqSergio = require('../public/json/faq-sergio.json');
-} catch (e) {
-  console.error('Failed to load faq-sergio.json:', e.message);
-}
-
-// Map of JSON objects by page
+// Map of JSON files by page
 const jsonMaps = {
   inicio: [
-    personSergio,
-    localBusinessSergio
-  ].filter(Boolean),
+    'person-sergio.json',
+    'localbusiness-sergio.json'
+  ],
   sobre: [
-    personSergio
-  ].filter(Boolean),
+    'person-sergio.json'
+  ],
   psicologia: [
-    servicePsicologia
-  ].filter(Boolean),
+    'service-psicologia-clinica-sergio.json'
+  ],
   orientacao: [
-    serviceOrientacao
-  ].filter(Boolean)
+    'service-orientacao-profissional-sergio.json'
+  ]
 };
+
+// Function to read JSON files
+function readJSONFile(filename) {
+  try {
+    // Try to read from /public/json/ directory
+    const publicPath = path.join(__dirname, '..', '..', 'public', 'json', filename);
+    const content = fs.readFileSync(publicPath, 'utf-8');
+    return JSON.parse(content);
+  } catch (e) {
+    console.error(`Could not read ${filename} from /public/json/: ${e.message}`);
+    return null;
+  }
+}
 
 exports.handler = async (event) => {
   try {
     const page = event.queryStringParameters?.page || 'inicio';
-    const jsonObjects = jsonMaps[page] || jsonMaps.inicio;
+    const files = jsonMaps[page] || jsonMaps.inicio;
     
-    console.log(`Processing page: ${page}`);
-    console.log(`JSON objects available: ${jsonObjects.length}`);
+    console.log(`Processing page: ${page}, files:`, files);
     
     const scripts = [];
-    for (const jsonObj of jsonObjects) {
-      if (jsonObj) {
-        scripts.push(`<script type="application/ld+json">${JSON.stringify(jsonObj)}</script>`);
+    for (const filename of files) {
+      const jsonData = readJSONFile(filename);
+      if (jsonData) {
+        scripts.push(`<script type="application/ld+json">${JSON.stringify(jsonData)}</script>`);
       }
     }
     
@@ -75,8 +58,8 @@ exports.handler = async (event) => {
         pageSchemas: scripts.join('\n'),
         debug: {
           page: page,
-          jsonObjectsLoaded: jsonObjects.length,
-          scriptsGenerated: scripts.length
+          filesRequested: files,
+          filesLoaded: scripts.length
         }
       })
     };
@@ -85,7 +68,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 500,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: error.message, stack: error.stack })
+      body: JSON.stringify({ error: error.message })
     };
   }
 };
