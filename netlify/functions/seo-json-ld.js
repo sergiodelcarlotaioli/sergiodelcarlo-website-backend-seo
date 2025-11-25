@@ -4,11 +4,30 @@ const path = require('path');
 // Function to read JSON files from public/json directory
 function readJSONFile(filename) {
   try {
-    // Use relative path from function location
-    const filePath = path.join(__dirname, '..', '..', 'public', 'json', filename);
-    console.log(`Attempting to read: ${filePath}`);
-    const content = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(content);
+    // In Netlify, files from /public are served at the root
+    // Try multiple path strategies for compatibility
+    const possiblePaths = [
+      path.join(__dirname, '..', '..', 'public', 'json', filename),
+      path.join(process.env.LAMBDA_TASK_ROOT || __dirname, '..', '..', 'public', 'json', filename),
+      `/var/task/public/json/${filename}`,
+      `./public/json/${filename}`
+    ];
+    
+    for (const filePath of possiblePaths) {
+      console.log(`Attempting to read: ${filePath}`);
+      try {
+        const content = fs.readFileSync(filePath, 'utf-8');
+        console.log(`Successfully read from: ${filePath}`);
+        return JSON.parse(content);
+      } catch (e) {
+        console.log(`Path ${filePath} failed, trying next...`);
+        continue;
+      }
+    }
+    
+    // If all paths fail, log and return null
+    console.error(`Error reading ${filename}: All paths exhausted`);
+    return null;
   } catch (error) {
     console.error(`Error reading ${filename}:`, error.message);
     return null;
@@ -38,6 +57,8 @@ exports.handler = async (event) => {
     const files = jsonMaps[page] || jsonMaps.inicio;
     
     console.log(`Processing page: ${page}, files:`, files);
+    console.log(`LAMBDA_TASK_ROOT: ${process.env.LAMBDA_TASK_ROOT}`);
+    console.log(`__dirname: ${__dirname}`);
     
     const scripts = [];
     for (const filename of files) {
@@ -62,7 +83,9 @@ exports.handler = async (event) => {
         debug: {
           page: page,
           filesRequested: files,
-          filesLoaded: scripts.length
+          filesLoaded: scripts.length,
+          taskRoot: process.env.LAMBDA_TASK_ROOT,
+          dirname: __dirname
         }
       })
     };
