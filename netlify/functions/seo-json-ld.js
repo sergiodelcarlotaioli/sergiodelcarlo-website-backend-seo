@@ -1,43 +1,43 @@
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const fs = require('fs');
+const path = require('path');
 
-// Função para buscar JSON do GitHub
-async function fetchJSON(url) {
+// Function to read JSON files from public/json directory
+function readJSONFile(filename) {
   try {
-    const response = await fetch(url);
-         const token = process.env.GITHUB_TOKEN || '';
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}, { headers: { 'Authorization': `token ${token}` } });
-    return await response.json();
+    const filePath = path.join(__dirname, '..', '..', 'public', 'json', filename);
+    const content = fs.readFileSync(filePath, 'utf-8');
+    return JSON.parse(content);
   } catch (error) {
-    console.error(`Erro ao buscar ${url}:`, error);
+    console.error(`Error reading ${filename}:`, error.message);
     return null;
   }
 }
 
-// Mapa de URLs de JSONs por página
+// Map of JSON files by page
 const jsonMaps = {
   inicio: [
-    'https://raw.githubusercontent.com/sergiodelcarlotaioli/sergiodelcarlo-website-backend-seo/main/person-sergio.json',
-    'https://raw.githubusercontent.com/sergiodelcarlotaioli/sergiodelcarlo-website-backend-seo/main/localbusiness-sergio.json'
+    'person-sergio.json',
+    'localbusiness-sergio.json'
   ],
   sobre: [
-    'https://raw.githubusercontent.com/sergiodelcarlotaioli/sergiodelcarlo-website-backend-seo/main/person-sergio.json'
+    'person-sergio.json'
   ],
   psicologia: [
-    'https://raw.githubusercontent.com/sergiodelcarlotaioli/sergiodelcarlo-website-backend-seo/main/service-psicologia-clinica-sergio.json'
+    'service-psicologia-clinica-sergio.json'
   ],
   orientacao: [
-    'https://raw.githubusercontent.com/sergiodelcarlotaioli/sergiodelcarlo-website-backend-seo/main/service-orientacao-profissional-sergio.json'
+    'service-orientacao-profissional-sergio.json'
   ]
 };
 
 exports.handler = async (event) => {
   try {
     const page = event.queryStringParameters?.page || 'inicio';
-    const urls = jsonMaps[page] || jsonMaps.inicio;
+    const files = jsonMaps[page] || jsonMaps.inicio;
     
     const scripts = [];
-    for (const url of urls) {
-      const json = await fetchJSON(url);
+    for (const filename of files) {
+      const json = readJSONFile(filename);
       if (json) {
         scripts.push(`<script type="application/ld+json">${JSON.stringify(json)}</script>`);
       }
