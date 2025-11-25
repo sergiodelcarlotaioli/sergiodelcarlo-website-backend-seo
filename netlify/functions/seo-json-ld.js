@@ -4,7 +4,8 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 async function fetchJSON(url) {
   try {
     const response = await fetch(url);
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+         const token = process.env.GITHUB_TOKEN || '';
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}, { headers: { 'Authorization': `token ${token}` } });
     return await response.json();
   } catch (error) {
     console.error(`Erro ao buscar ${url}:`, error);
