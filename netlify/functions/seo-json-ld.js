@@ -1,58 +1,61 @@
-const fs = require('fs');
-const path = require('path');
+// Import JSON files directly - Netlify bundler will include them
+const personSergio = require('./json/person-sergio.json');
+const localbusinessSergio = require('./json/localbusiness-sergio.json');
+const servicePsicologia = require('./json/service-psicologia-clinica-sergio.json');
+const serviceOrientacao = require('./json/service-orientacao-profissional-sergio.json');
+const faqSergio = require('./json/faq-sergio.json');
 
-// Map of JSON files by page
+// Map of JSON data by page
 const jsonMaps = {
-  inicio: ['person-sergio.json', 'localbusiness-sergio.json'],
-  sobre: ['person-sergio.json'],
-  psicologia: ['service-psicologia-clinica-sergio.json'],
-  orientacao: ['service-orientacao-profissional-sergio.json']
+  inicio: [personSergio, localbusinessSergio],
+  sobre: [personSergio],
+  psicologia: [servicePsicologia],
+  orientacao: [serviceOrientacao],
+  faq: [faqSergio]
 };
-
-function readJSONFile(filename) {
-  try {
-    // Try reading from ./json/ directory (relative to function)
-    const filePath = path.join(__dirname, 'json', filename);
-    const content = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(content);
-  } catch (error) {
-    console.error(`Error reading ${filename}:`, error.message);
-    return null;
-  }
-}
 
 exports.handler = async (event) => {
   try {
     const page = event.queryStringParameters?.page || 'inicio';
-    const files = jsonMaps[page] || jsonMaps.inicio;
+    const jsonDataArray = jsonMaps[page] || jsonMaps.inicio;
     
-    const scripts = [];
-    for (const filename of files) {
-      const jsonData = readJSONFile(filename);
-      if (jsonData) {
-        scripts.push(`<script type="application/ld+json">${JSON.stringify(jsonData)}</script>`);
-      }
-    }
+    // Generate script tags
+    const scripts = jsonDataArray.map(jsonData => 
+      `<script type="application/ld+json">${JSON.stringify(jsonData)}</script>`
+    );
     
     return {
       statusCode: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
       },
       body: JSON.stringify({
-        success: scripts.length > 0,
+        success: true,
         scripts: scripts,
         pageSchemas: scripts.join('\n'),
-        debug: { page, filesLoaded: scripts.length }
+        debug: { 
+          page, 
+          filesLoaded: scripts.length,
+          timestamp: new Date().toISOString()
+        }
       })
     };
   } catch (error) {
-    console.error('Function error:', error);
+    console.error('[SEO-JSON-LD] Function error:', error);
     return {
       statusCode: 500,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: error.message })
+      headers: { 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({ 
+        success: false,
+        error: error.message,
+        stack: error.stack
+      })
     };
   }
 };
